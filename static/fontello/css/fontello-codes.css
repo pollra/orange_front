@@ -13,8 +13,13 @@
 .icon-home-outline:before { content: '\e80b'; } /* '' */
 .icon-home:before { content: '\e80c'; } /* '' */
 .icon-ok:before { content: '\e80d'; } /* '' */
+.icon-user:before { content: '\e80e'; } /* '' */
+.icon-key:before { content: '\e80f'; } /* '' */
+.icon-cog-alt:before { content: '\e810'; } /* '' */
 .icon-emo-squint:before { content: '\e811'; } /* '' */
+.icon-at:before { content: '\e812'; } /* '' */
 .icon-spin1:before { content: '\e830'; } /* '' */
 .icon-spin6:before { content: '\e839'; } /* '' */
+.icon-info:before { content: '\f129'; } /* '' */
 .icon-calendar-empty:before { content: '\f133'; } /* '' */
 .icon-user-plus:before { content: '\f234'; } /* '' */

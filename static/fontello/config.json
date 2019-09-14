@@ -119,6 +119,36 @@
       "css": "user-plus",
       "code": 62004,
       "src": "fontawesome"
+    },
+    {
+      "uid": "8b80d36d4ef43889db10bc1f0dc9a862",
+      "css": "user",
+      "code": 59406,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "3d4ea8a78dc34efe891f3a0f3d961274",
+      "css": "info",
+      "code": 61737,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "8beac4a5fd5bed9f82ca7a96cc8ba218",
+      "css": "key",
+      "code": 59407,
+      "src": "entypo"
+    },
+    {
+      "uid": "98687378abd1faf8f6af97c254eb6cd6",
+      "css": "cog-alt",
+      "code": 59408,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "6db15bda083b09a04bd27dcc1d00744d",
+      "css": "at",
+      "code": 59410,
+      "src": "iconic"
     }
   ]
 }

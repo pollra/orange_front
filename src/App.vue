@@ -9,6 +9,9 @@
         <template slot="logo-title">{{this.$store.state.blog_info.title}}</template>
         <template slot="logo-explanation">{{this.$store.state.blog_info.explanation}}</template>
       </logo-texts>
+      <sign-update slot="left" class="update-form">
+
+      </sign-update>
       <categories slot="center">
         <category
           slot="categories"
@@ -45,6 +48,7 @@ import ContentInfo from "./components/molecules/contents/content-info";
 import FooterBox from "./components/molecules/footer/footer-box";
 import { store } from "./components/store";
 import vueHeadful from "vue-headful";
+import SignUpdate from "./components/molecules/contents/sign/sign-update";
 
 Vue.use(Vuex)
 
@@ -52,6 +56,7 @@ export default {
   name: 'App',
     store,
     components: {
+        SignUpdate,
       FooterBox,
       Category,
       Categories,
