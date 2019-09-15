@@ -88,7 +88,12 @@ export const store = new Vuex.Store({
         icon:""
       }
     },
-    j_token:""
+    j_token:"",
+    login_info:{
+      name:"GUEST",
+      date:""
+    }
+
   },
   mutations:{
     /**
@@ -209,6 +214,7 @@ export const store = new Vuex.Store({
             console.log("ㅇㅅㅇa2");
             locate = 0;
             state.j_token = response.data.Authorization;
+            state.login_info.name = response.data.user;
             // state.commit("set_j_token", response.data.Authorization);
             console.log("ㅇㅅㅇa3");
             console.log("ㅇㅅㅇa3: "+state.j_token);
@@ -257,6 +263,44 @@ export const store = new Vuex.Store({
     },
     page_redirect_update:(state,payload)=>{
       state.page_status.icon_redirect = payload;
+    },
+    /**
+     * Post 관련 요청
+     */
+
+    /**
+     * 포스팅 작성 요청
+     * title : 글 제목
+     * post_content : 글 내용
+     * date : 날짜 데이터. 서버에서 처리함
+     * owner : 작성자. 서버에서 처리
+     *
+     * @param state
+     * @param payload
+     *  [0] : title : 글 제목
+     *  [1] : post_content : 글 내용
+     */
+    post_insert_mutations:(state, payload) => {
+      let result = 0;
+      let postData = new URLSearchParams;
+      postData.append("title",payload[0]);
+      postData.append("content",payload[1]);
+      postData.append("category",payload[2]);
+      axios.post(state._location+"/posts/create",postData)
+        .then(function (response) {
+          if(response.status === "200"){
+            console.log("post_insert : OK");
+            // 요청을 처리한 결과는 보여질 페이지의 위치
+            result = response.data.redirect;
+          }
+        })
+        .catch(function (err) {
+          console.log("err.message : "+err.message);
+          console.log("JSON.stringify(err).message : "+JSON.stringify(err).message);
+          // alert(err.message);
+          result = -1;
+        })
+      return result;
     }
   },
   actions:{

@@ -21,9 +21,9 @@
           <span class="data-logo-title">비밀번호</span>
         </div>
         <div class="data-component">
-          <input class="data-component-value" id="pw-input" v-model="pw" required="required"/>
+          <input class="data-component-value" id="pw-input" v-model="pw" type="password" required="required"/>
           <div class="data-component-underbar"></div>
-          <input class="data-component-value" id="pw-match" v-model="pw_m" required="required"/>
+          <input class="data-component-value" id="pw-match" v-model="pw_m" type="password" required="required"/>
           <div class="data-component-underbar" id="pw-match-bar"></div>
           <button class="update-action password-button">변경</button>
         </div>

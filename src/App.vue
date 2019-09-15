@@ -6,12 +6,21 @@
     <navigation>
       <user-icon slot="left" class="nav_user_icon" v-bind:imgPath="this.$store.state.blog_info.imgPath"></user-icon>
       <logo-texts slot="left">
-        <template slot="logo-title">{{this.$store.state.blog_info.title}}</template>
+        <template slot="logo-title" v-if="this.$store.state.j_token !== ''">
+          {{this.$store.state.blog_info.title}}
+          <router-link to="/create/post" class="icon-pencil-squared user-info-btn"/>
+          <label class="icon-user user-info-btn" for="toggle-user-info"/>
+          <input id="toggle-user-info" type="checkbox" required="required" checked>
+          <sign-update slot="left" class="update-form" v-if="this.$store.state.j_token !== ''">
+            <template slot="user-name">{{this.$store.state.login_info.name}}</template>
+            <template slot="user-date">{{this.$store.state.login_info.date}}</template>
+          </sign-update>
+        </template>
+        <template slot="logo-title" v-if="this.$store.state.j_token === ''">{{this.$store.state.blog_info.title}}</template>
+
         <template slot="logo-explanation">{{this.$store.state.blog_info.explanation}}</template>
       </logo-texts>
-      <sign-update slot="left" class="update-form">
 
-      </sign-update>
       <categories slot="center">
         <category
           slot="categories"
@@ -93,5 +102,20 @@ export default {
   }
   .contents{
     transition: all .2s ease;
+  }
+  .user-info-btn{
+    float: right;
+    color: #666666;
+    cursor: pointer;
+  }
+  .user-info-btn:hover{
+    color: #4facfe;
+  }
+  #toggle-user-info{
+    position: absolute;
+    left: -9999px;
+  }
+  #toggle-user-info:checked ~ .update-form{
+    display: none;
   }
 </style>

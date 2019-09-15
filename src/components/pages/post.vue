@@ -10,7 +10,9 @@
       <template v-if="this.$store.state.board_info.contents === ''">
         <content-none></content-none>
       </template>
-      {{this.$store.state.board_info.contents}}
+      <viewer class="viewer">
+        {{this.$store.state.board_info.contents}}
+      </viewer>
     </div>
   </content-box>
 </template>
@@ -19,7 +21,6 @@
   import ContentBox from '@/components/molecules/contents/content-box';
   import ContentInfo from '@/components/molecules/contents/content-info';
   import ContentNone from "../molecules/contents/content-none";
-  import Axios from "axios";
 
     export default {
         name: "post",
@@ -52,5 +53,8 @@
 <style scoped>
   #content-board > p{
     margin-bottom: 10px;
+  }
+  .viewer{
+    width: 100%;
   }
 </style>

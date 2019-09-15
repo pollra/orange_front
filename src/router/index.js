@@ -4,6 +4,7 @@ import Post from '@/components/pages/post';
 import BoardList from '@/components/pages/board-list'
 import Login from '@/components/pages/login'
 import SignUp from '@/components/pages/signup'
+import PostCreate from '@/components/pages/post-create'
 
 Vue.use(Router)
 
@@ -33,6 +34,11 @@ export default new Router({
       path: '/signup',
       name: 'SignUp',
       component: SignUp
+    },
+    {
+      path: '/create/post',
+      name: 'PostCreate',
+      component: PostCreate
     }
   ]
 })
