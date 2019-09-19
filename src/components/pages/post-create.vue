@@ -20,7 +20,7 @@
       <viewer v-model="text" id="viewer"></viewer>
       <div class="editor-box">
         <editor v-model="text" id="editor"></editor>
-        <button id="post-action-btn" class="icon-pencil" slot="contents">
+        <button id="post-action-btn" class="icon-pencil" slot="contents" @click="one_post_insert">
           작성
         </button>
       </div>

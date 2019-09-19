@@ -1,14 +1,23 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from 'axios';
 import VueRouter from "vue-router";
 
 Vue.use(Vuex);
 
+const axios = require('axios');
+axios.interceptors.request.use(function (config) {
+  // console.log(config)
+  config.validateStatus = function (status) {
+    return status >= 200 && status < 501; // default
+  }
+  return config;
+}, function (error) {
+  return Promise.reject(error)
+})
 
 export const store = new Vuex.Store({
   state:{
-    _location:"http://localhost",
+    _location:"http://blog.pollra.com",
     page_status:{
       icon_redirect: {
         login_page: "/",
@@ -55,7 +64,9 @@ export const store = new Vuex.Store({
       },
       pw:{
         data:""
-      }
+      },
+      result:false,
+      message:""
     },
     // 가입 데이터
     signup_data:{
@@ -105,6 +116,7 @@ export const store = new Vuex.Store({
       console.log(`set_board_list[${currentPath}]`);
       axios.get(state._location+"/boards/"+currentPath)
         .then(function (response) {
+
           state.board_list = response;
           console.log(`get_board_list[success]: ${response}`)
         })
@@ -114,11 +126,13 @@ export const store = new Vuex.Store({
         })
     },
     /**
+     * 블로그 정보 불러오기
+     *
      * 서버에 blog_info 데이터를 요청하여 블로그의 정보를 가져옵니다.
      * @param state       vuex store
      */
     set_blog_info:(state)=>{
-      axios.get(state._location+"/api/public/blog")
+      axios.get(state._location+"/api/blog")
         .then(function (response) {
           console.log("수신한 정보[get_blogInfo] : "+JSON.stringify(response.data));
           state.blog_info = response.data;
@@ -130,16 +144,19 @@ export const store = new Vuex.Store({
     },
     /**
      * 카테고리 정보를 가져옵니다.
+     *
      * @param state
      */
     set_categories_list:(state)=>{
-      axios.get(state._location+"/api/public/categories/list")
+      axios.get(state._location+"/api/categories/value/list")
         .then(function (response) {
-          console.log(`수신한 정보[set_categories_list]: ${JSON.stringify(response.data)}`)
-          state.categories = response.data;
+          console.log(`수신한 정보[set_categories_list]:${response}\n ${JSON.stringify(response.data)}`);
+          state.categories = response.data.data;
+          if(!(JSON.stringify(response.status)==="200")){
+            console.log(`카테고리 정보를 받아오지 못했습니다: ${response.message}`);
+          }
         }).catch(function (error) {
           console.log('카테고리 데이터를 받아오는데 실패했습니다.');
-          state.categories = [];
         })
     },
     /**
@@ -168,15 +185,16 @@ export const store = new Vuex.Store({
         state.signin_data.id.icon = "icon-spin1 spin";
         let postData = new URLSearchParams();
         postData.append('username', state.signin_data.id.data)
-        axios.post(state._location+"/api/public/users/id",postData)
+        axios.post(state._location+"/api/users/check/id",postData)
           .then(function (response) {
             // console.log("수신 정보"+JSON.stringify(response));
-            state.signin_data.id.icon = "icon-ok";
-          })
-          .catch(function (error) {
-            console.log("아이디를 찾을 수 없습니다.")
-            state.signin_data.id.msg = "아이디를 찾을 수 없습니다.";
-            state.signin_data.id.icon = "icon-cancel";
+            if(JSON.stringify(response.status)==="200") {
+              state.signin_data.id.icon = "icon-ok";
+            }else{
+              console.log("아이디를 찾을 수 없습니다.")
+              state.signin_data.id.msg = "아이디를 찾을 수 없습니다.";
+              state.signin_data.id.icon = "icon-cancel";
+            }
           })
     },
     sign_up_check_id:(state)=>{
@@ -184,7 +202,7 @@ export const store = new Vuex.Store({
       state.signup_data.id.icon = "icon-spin1 spin";
       let postData = new URLSearchParams();
       postData.append('username', state.signup_data.id.data)
-      axios.post(state._location+"/api/public/users/id",postData)
+      axios.post(state._location+"/api/users/check/id",postData)
         .then(function (response) {
           // console.log("수신 정보"+JSON.stringify(response));
           state.signup_data.id.icon = "icon-ok";
@@ -202,37 +220,32 @@ export const store = new Vuex.Store({
      */
     login_mutations:(state)=>{
       // j_token
-        let result = false;
-        let postData = new URLSearchParams;
-        let locate = 0;
-        postData.append('username', state.signin_data.id.data);
-        postData.append('password', state.signin_data.pw.data);
-        axios.defaults.headers.common['Authorization'] = "";
-        console.log("ㅇㅅㅇa1");
-        axios.post(state._location+"/api/authenticate", postData)
-          .then(function (response) {
-            console.log("ㅇㅅㅇa2");
-            locate = 0;
-            state.j_token = response.data.Authorization;
-            state.login_info.name = response.data.user;
-            // state.commit("set_j_token", response.data.Authorization);
-            console.log("ㅇㅅㅇa3");
-            console.log("ㅇㅅㅇa3: "+state.j_token);
-            if(response.data.redirectLocate !== undefined){
-              console.log("ㅇㅅㅇa4");
-              locate = response.data.redirectLocate;
-            }
-            console.log("ㅇㅅㅇa5");
-            // this.$router.push({name:'Post',params:{num:locate}})
-            // 페이지 이동
-            console.log("ㅇㅅㅇa6");
-            result = true;
-          }).catch(function (err) {
-            console.log("ㅇㅅㅇa7");
-            result = false;
-            console.log(err);
-        })
-        return result;
+      state.signin_data.result = false;
+      let result = false;
+      let postData = new URLSearchParams;
+      let locate = 0;
+      postData.append('username', state.signin_data.id.data);
+      postData.append('password', state.signin_data.pw.data);
+      axios.defaults.headers.common['Authorization'] = "";
+      axios.post(state._location + "/api/users/login", postData,/*{validateStatus: function (status) {
+          return status >= 200 && status < 501; // default
+        },}*/)
+      .then(function (response) {
+        if(JSON.stringify(response.status)==="200") {
+          state.j_token = response.data.data;
+          state.login_info.name = response.data.message;
+          // state.commit("set_j_token", response.data.Authorization);
+          if(response.data.redirectLocate !== undefined){
+            locate = response.data.redirectLocate;
+          }
+          state.signin_data.result = true;
+          console.log(`로그인 성공했습니다 ${state.signin_data.result}`)
+        }else{
+          alert(response.data.message);
+          state.signin_data.result = false;
+          console.log(`로그인 실패했습니다 ${state.signin_data.result}`)
+        }
+      })
     },
     set_j_token:(state, payload)=>{
       state.j_token = payload;
@@ -286,7 +299,8 @@ export const store = new Vuex.Store({
       postData.append("title",payload[0]);
       postData.append("content",payload[1]);
       postData.append("category",payload[2]);
-      axios.post(state._location+"/posts/create",postData)
+      axios.defaults.headers.common['Authorization'] = state.j_token;
+      axios.post(state._location+"/api/posts",postData)
         .then(function (response) {
           if(response.status === "200"){
             console.log("post_insert : OK");
@@ -322,7 +336,7 @@ export const store = new Vuex.Store({
       console.log(`password-match ${payload[2]}`);
       console.log(`email ${payload[3]}`);
       console.log(`location : ${context._location}`)*/
-      axios.post("http://localhost/api/public/users",postData)
+      axios.post("http://blog.pollra.com/api/users",postData)
         .then(function (response) {
           // console.log("ㅇㅂㅇ!: "+response);
           if(response.status === 200){
@@ -337,7 +351,20 @@ export const store = new Vuex.Store({
       return result;
     },
     login_action:function (context) {
-      context.commit("login_mutations");
+      return new Promise((resolve, reject) => {
+        context.commit("login_mutations")
+        setTimeout(()=>{
+          resolve()
+        }, 1000)
+      })
+    }
+  },
+  getters:{
+    login_data:(state)=>{
+      return state.signin_data;
+    },
+    login_result:(state, getters)=>{
+      return getters.login_data.result;
     }
   }
 });

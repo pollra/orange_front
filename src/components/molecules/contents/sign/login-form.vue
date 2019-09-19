@@ -29,6 +29,8 @@
 
 <script>
     import {store} from "./../../../store";
+    import { mapGetters } from 'vuex'
+
     export default {
         name: "login-form",
         store,
@@ -40,6 +42,42 @@
             }
         },
         methods:{
+            j_login_action(){
+                const a = this;
+                console.log("로그인 버튼이 눌림 ㅇㅅㅇ !!!!");
+                this.$store.dispatch("login_action")
+                    .then(()=>{
+                      a.abc();
+                    })
+                /*console.log("ㅇㅅㅇ;;;;")
+                console.log(this.$store.state.signin_data.result);
+                console.log(`result : ${this.get_login_result}`);
+                if(this.get_login_result){
+                    console.log(`페이지 이동${this.get_login_result}`);
+                    this.$router.push("/post/1")
+                }else{
+                    console.log(`페이지 이동 ㄴㄴ${this.get_login_result}`);
+
+                    // alert(this.$store.state.signin_data.message);
+                    // this.id = "";
+                    // this.pw = "";
+                }*/
+            },
+            abc(){
+                console.log("ㅇㅅㅇ;;;;")
+                console.log(this.$store.state.signin_data.result);
+                console.log(`result : ${this.get_login_result}`);
+                if(this.get_login_result){
+                    console.log(`페이지 이동${this.get_login_result}`);
+                    this.$router.push("/post/1")
+                }else{
+                    console.log(`페이지 이동 ㄴㄴ${this.get_login_result}`);
+
+                    // alert(this.$store.state.signin_data.message);
+                    // this.id = "";
+                    // this.pw = "";
+                }
+            }
         },
         computed:{
             set_login_data_id(){
@@ -62,20 +100,14 @@
                 // console.log(this.$store.state.sign_data.pw);
                 return this.$store.state.signin_data.pw.data;
             },
-            j_login_action(){
-                console.log("로그인 버튼이 눌림 ㅇㅅㅇ !!!!");
-                this.$store.dispatch("login_action")
-                    .then(function () {
-                      console.log("ㅇㅅㅇ?-0")
-                      // this.$router.push("/post/1");
-                      // console.log("ㅇㅅㅇ?-1 : "+this.$store.state.j_token);
-                    })
-                    .catch(function () {
-
-                        console.log("j_login_action 에러");
-                    })
-                this.$router.push("/post/1")
-            }
+            get_login_result(){
+                // console.log(`get_login_result ${this.$store.getters.login_result}`)
+                return this.$store.getters.login_result;
+            },
+            ...mapGetters([
+                'login_data',
+              'login_result'
+            ])
         }
     }
 </script>
@@ -85,6 +117,7 @@
     font-size: 14px;
     color: #42b983;
     transition: all .3s ease;
+
   }
   #login-page{
     width: 100%;
