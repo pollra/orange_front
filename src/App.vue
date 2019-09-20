@@ -11,9 +11,14 @@
           <router-link to="/create/post" class="icon-pencil-squared user-info-btn"/>
           <label class="icon-user user-info-btn" for="toggle-user-info"/>
           <input id="toggle-user-info" type="checkbox" required="required" checked>
-          <sign-update slot="left" class="update-form" v-if="this.$store.state.j_token !== ''">
-            <template slot="user-name">{{this.$store.state.login_info.name}}</template>
-            <template slot="user-date">{{this.$store.state.login_info.date}}</template>
+          <sign-update slot="left"
+                       class="update-form"
+                       v-if="this.$store.state.j_token !== ''"
+                       v-bind:username="this.$store.state.login_info.name"
+                       v-bind:date="this.$store.state.login_info.date"
+          >
+<!--            <template slot="user-name">{{this.$store.state.login_info.name}}</template>-->
+<!--            <template slot="user-date">{{this.$store.state.login_info.date}}</template>-->
           </sign-update>
         </template>
         <template slot="logo-title" v-if="this.$store.state.j_token === ''">{{this.$store.state.blog_info.title}}</template>
@@ -55,7 +60,6 @@ import Category from "./components/atoms/textBox/category";
 import ContentBox from "./components/molecules/contents/content-box";
 import ContentInfo from "./components/molecules/contents/content-info";
 import FooterBox from "./components/molecules/footer/footer-box";
-import { store } from "./components/store";
 import vueHeadful from "vue-headful";
 import SignUpdate from "./components/molecules/contents/sign/sign-update";
 
@@ -63,7 +67,6 @@ Vue.use(Vuex)
 
 export default {
   name: 'App',
-    store,
     components: {
         SignUpdate,
       FooterBox,
@@ -75,6 +78,16 @@ export default {
       "content-box":ContentBox,
       "content-info":ContentInfo,
       "vue-headful":vueHeadful
+    },
+    data(){
+      return {
+          user_data_update:{
+              username : "guest",
+              pw: "",
+              pw_m:"",
+              email:""
+          }
+      }
     },
     created() {
       this.$store.commit("set_blog_info");

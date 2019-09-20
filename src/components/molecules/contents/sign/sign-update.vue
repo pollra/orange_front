@@ -4,10 +4,10 @@
       <div class="icon-cog-alt logo-icon"></div>
       <div class="logo-component">
         <div class="logo-component-title">
-          <slot name="user-name">GUEST</slot>
+          <span >{{username}}</span>
         </div>
         <div class="logo-component-content">
-          <slot name="user-date">2019-09-14</slot>
+          <span v-model="date">{{date}}</span>
         </div>
         <div class="logo-component-underbar"></div>
       </div>
@@ -25,7 +25,7 @@
           <div class="data-component-underbar"></div>
           <input class="data-component-value" id="pw-match" v-model="pw_m" type="password" required="required"/>
           <div class="data-component-underbar" id="pw-match-bar"></div>
-          <button class="update-action password-button">변경</button>
+          <button class="update-action password-button" @click="update_user_data('password')">변경</button>
         </div>
       </div>
       <div class="data-box-underbar"></div>
@@ -36,12 +36,14 @@
           <span class="data-logo-title">이메일</span>
         </div>
         <div class="data-component">
-          <input class="data-component-value" id="email-input" required="required"/>
+          <input class="data-component-value" id="email-input" v-model="email" required="required"/>
           <div class="data-component-underbar"></div>
-          <button class="update-action email-button">변경</button>
+          <button class="update-action email-button" @click="update_user_data('email')">변경</button>
         </div>
       </div>
-      <div></div>
+    </div>
+    <div id="logout-box">
+      <button id="logoutBtn" @click="logout_user">로그아웃</button>
     </div>
   </div>
 </template>
@@ -49,11 +51,56 @@
 <script>
     export default {
         name: "sign-update",
+        props:['username', 'date'],
         data(){
             return {
                 pw:"",
-                pw_m:""
+                pw_m:"",
+                email:"",
             }
+        },
+        methods:{
+            update_user_data:function(option){
+                console.log(`update_user_data[option: ${option}] start`);
+                console.log(`username: ${this.$store.state.login_info.name}`);
+                console.log(`this.current_pw: `+this.current_pw);
+                let data = "";
+                let password = document.getElementById("pw-input").value;
+                // let user = this.$store.state.login_info.name;
+                // console.log(`password: ${password}, username: ${user}`);
+                switch (option) {
+                    case "email":
+                        data = [option, this.username, this.email];
+                        this.email = "";
+                        break;
+                    case "password":
+                        data = [option, this.username, this.pw, this.pw_m];
+                        this.pw = "";
+                        this.pw_m = "";
+                        break;
+                    default:
+                        data = [option, this.username];
+                }
+                console.log(`Activation userUpdate logic: ${data}`);
+                this.$store.commit("update_user_data_mutations",data);
+            },
+            logout_user:function () {
+                this.$store.commit("logout_user");
+            }
+        },
+        computed:{
+            /*login_info:()=>{
+                return this.$store.state.login_info;
+            }*/
+            current_pw:()=>{
+                // console.log("입력된 비밀번호: "+this.pw);
+                return this.pw;
+            },
+            username_(){
+                return this.$store.state.login_info.name;
+            }
+        },
+        created() {
         }
     }
 </script>
@@ -197,5 +244,25 @@
   }
   .data-component-value:valid ~ .email-button{
     display: block;
+  }
+  #logout-box{
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+  }
+  #logoutBtn{
+    width: 250px;
+    margin: 10px auto;
+    border: none;
+    border-radius: 3px;
+    background: #cccccc;
+  }
+  #logoutBtn:hover{
+    background: #666666;
+    transition: all .2s ease;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    width: 260px;
   }
 </style>

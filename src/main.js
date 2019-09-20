@@ -7,6 +7,7 @@ import 'tui-editor/dist/tui-editor.css'
 import 'tui-editor/dist/tui-editor-contents.css'
 import 'codemirror/lib/codemirror.css'
 import { Editor, Viewer } from '@toast-ui/vue-editor'
+import { store } from "./components/store";
 
 Vue.config.productionTip = false
 Vue.component('editor', Editor)
@@ -15,6 +16,7 @@ Vue.component('viewer', Viewer)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   components: { App },
   template: '<App/>'

@@ -247,6 +247,60 @@ export const store = new Vuex.Store({
         }
       })
     },
+    /**
+     * 개인정보 수정
+     *
+     * @param state
+     * @param payload
+     *  email : 이메일 수정
+     *  password : 비밀번호 수정
+     */
+    update_user_data_mutations:(state, payload)=>{
+      // payload 로 원하는 옵션을 선택할 수 있게 설정
+      // email 수정, password 수정.
+      // email 수정 기능 받는 데이터 : username(id), email
+      // password 수정 기능 받는 데이터 : username(id), password, password-match
+      let option = payload[0];
+      if(payload.length <= 2) alert("존재하지 않는 명령입니다.");
+      let postData = new URLSearchParams;
+      axios.defaults.headers.common['Authorization'] = state.j_token;
+      console.log(axios.default)
+      postData.append("username",payload[1]);
+      switch (option) {
+        case "email":
+          postData.append("email",payload[2]);
+          break;
+        case "password":
+          postData.append("password",payload[2]);
+          postData.append("password-match",payload[3]);
+          break;
+        default:
+      }
+      axios.put(state._location+"/api/users/type/"+option, postData)
+        .then(response =>{
+          console.log(`update_user_data_mutations -> axios.put[${state._location}/api/users/type/+${option}] 실행`)
+          const result = response.data;
+          if(JSON.stringify(response.status)==="200"){ // 성공
+            alert(result.message);
+          }else{ // 실패
+            alert(result.message);
+          }
+        });
+    },
+    logout_user:state =>{
+      axios.defaults.headers.common['Authorization'] = state.j_token;
+      axios.post(state._location+"/api/users/logout")
+        .then(function (response) {
+          const result = response.data;
+          if(JSON.stringify(response.status)==="200") { // 성공
+            state.j_token = "";
+            alert(result.message);
+          }else{
+            state.j_token = "";
+            console.log(result.message);
+          }
+        })
+    },
     set_j_token:(state, payload)=>{
       state.j_token = payload;
     },
