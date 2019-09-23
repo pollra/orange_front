@@ -76,7 +76,7 @@
                   })
           },
           currentCategory:function(item){
-              console.log(`listCount: ${this.$store.state.listCount[this.$route.params.category.toLowerCase()] === 0}`);
+              // console.log(`listCount: ${this.$store.state.listCount[this.$route.params.category.toLowerCase()] === 0}`);
               if(this.$store.state.listCount === undefined) return true;
               return this.$store.state.listCount[this.$route.params.category.toLowerCase()] === 0;
           }

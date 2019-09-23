@@ -12,7 +12,7 @@
         </div>
         <div>
           <label for="password">비밀번호</label>
-          <input id="password" type="text" v-model="user_account.pw"/>
+          <input id="password" type="password" v-model="user_account.pw"/>
           <div class="under-line"></div>
         </div>
         <div>
@@ -46,14 +46,20 @@
             }
         },
         methods:{
-            go_signIn(){
+            go_signIn:function(){
+                const self = this;
                 this.$store.dispatch("signup_action",[
                     this.user_account.id,
                     this.user_account.pw,
                     this.user_account.pw_m,
                     this.user_account.email
                 ]).then(function () {
-                    this.$router.push("/login")
+                    if(self.$store.state.signup_data.result) {
+                        console.log("로그인 폼으로 이동합니다.");
+                      self.$router.push("/login")
+                    }else{
+                        console.log("가입 실패(?)");
+                    }
                 })
             }
         },
@@ -139,6 +145,7 @@
     border-radius: 5px;
     color: white;
     font-size: 16px;
+    cursor:pointer;
   }
   .icon-spin1{
     right: 15px;

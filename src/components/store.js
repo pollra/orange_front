@@ -326,6 +326,10 @@ export const store = new Vuex.Store({
           if(response.status === 200){
             // this.$router.push("/login");
             state.signup_data.result = true;
+          }else{
+            console.log("회원가입 실패: "+response.data.message);
+            alert(response.data.message)
+            state.signup_data.result = false;
           }
         })
         .catch(function (err) {
@@ -453,7 +457,7 @@ export const store = new Vuex.Store({
       for(let j=0; j<categoriesList.length; j++){
         console.log(`categoriesList[${j}]: `+categoriesList[j])
         for(let k=0; k<list.length; k++){
-          console.log(`${list[k].category.toLowerCase()} :: ${categoriesList[j]}`);
+          // console.log(`${list[k].category.toLowerCase()} :: ${categoriesList[j]}`);
           if(list[k].category.toLowerCase() === categoriesList[j]) listCount[categoriesList[j]]++;
         }
       }
@@ -470,10 +474,10 @@ export const store = new Vuex.Store({
     },
     signup_action:function (context, payload) {
       return new Promise(function (resolve) {
+        context.commit("signup_user", payload);
         setTimeout(function () {
-          context.commit("signup_user", payload);
           resolve();
-        }, 500)
+        }, 100)
       });
     },
     login_action:function (context) {

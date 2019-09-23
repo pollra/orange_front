@@ -47,7 +47,7 @@
     margin: 0px;
     flex-basis: 240px;
     height: 240px;
-    transition: all .2s ease;
+    transition: all .1s ease;
   }
   .item-view{
     width: 100%;
