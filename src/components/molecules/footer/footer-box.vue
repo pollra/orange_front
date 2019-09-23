@@ -21,7 +21,7 @@
     export default {
         name: "footer-box",
         updated(){
-            console.log(`현재 토큰 정보 : ${this.$store.state.j_token}`);
+           // console.log(`현재 토큰 정보 : ${this.$store.state.j_token}`);
         }
     }
 </script>

@@ -6,6 +6,9 @@
     <navigation>
       <user-icon slot="left" class="nav_user_icon" v-bind:imgPath="this.$store.state.blog_info.imgPath"></user-icon>
       <logo-texts slot="left">
+        <template slot="logo-title" v-if="this.$store.state.j_token === ''">
+          {{this.$store.state.blog_info.title}}
+        </template>
         <template slot="logo-title" v-if="this.$store.state.j_token !== ''">
           {{this.$store.state.blog_info.title}}
           <router-link to="/create/post" class="icon-pencil-squared user-info-btn"/>
@@ -21,7 +24,6 @@
 <!--            <template slot="user-date">{{this.$store.state.login_info.date}}</template>-->
           </sign-update>
         </template>
-        <template slot="logo-title" v-if="this.$store.state.j_token === ''">{{this.$store.state.blog_info.title}}</template>
 
         <template slot="logo-explanation">{{this.$store.state.blog_info.explanation}}</template>
       </logo-texts>

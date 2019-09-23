@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
 
 export const store = new Vuex.Store({
   state:{
-    _location:"http://blog.pollra.com",
+    _location:"http://localhost",
     page_status:{
       icon_redirect: {
         login_page: "/",
@@ -28,15 +28,27 @@ export const store = new Vuex.Store({
       }
     },
     blog_info:{
-      name:"Pollra 블로그",
+      title:"Pollra 블로그",
       explanation: "잊을만 하면 찾아오는 기억 저장소",
-      imgPath: "../static/test/icon/content02.png"
+      imgPath: ""
     },
-    categories:[{
+    categories:[
+      {
         num:1,
         owner:"pollra",
         name:"Hobby"
-      }],
+      },
+      {
+        num:2,
+        owner:"pollra",
+        name:"Programing"
+      },
+      {
+        num:3,
+        owner:"pollra",
+        name:"Board"
+      }
+    ],
     board_info:{
       parent: "main",
       title: "포스팅을 확인할 수 없습니다.",
@@ -45,13 +57,22 @@ export const store = new Vuex.Store({
       contents: ""
     },
     board_list:[
-      // {
-      //   title:"Java",
-      //   date:"19.08.18",
-      //   uri:"1",
-      //   img_path:""
-      // },
+      {
+        title:"Java",
+        date:"19.08.18",
+        uri:"1",
+        img_path:"",
+        category:"Hobby"
+      },
+      {
+        title:"ㅅㄷㄴㅅ",
+        date:"19.09.22",
+        uri:"5",
+        img_path:null,
+        category:"programing"
+      }
     ],
+    board_list_result:true,
     currentPath:"",
     // 로그인 데이터
     signin_data:{
@@ -97,14 +118,15 @@ export const store = new Vuex.Store({
         count:0,
         classes:"",
         icon:""
-      }
+      },
+      result: false
     },
     j_token:"",
     login_info:{
       name:"GUEST",
       date:""
-    }
-
+    },
+    listCount:{}
   },
   mutations:{
     /**
@@ -287,6 +309,34 @@ export const store = new Vuex.Store({
           }
         });
     },
+    /**
+     * 회원가입
+     * @param state
+     * @param payload
+     */
+    signup_user: (state, payload) => {
+      let postData = new URLSearchParams;
+      postData.append("username",payload[0]);
+      postData.append("password",payload[1]);
+      postData.append("password-match",payload[2]);
+      postData.append("email",payload[3]);
+      axios.post(state._location+"/api/users",postData)
+        .then(function (response) {
+          // console.log("ㅇㅂㅇ!: "+response);
+          if(response.status === 200){
+            // this.$router.push("/login");
+            state.signup_data.result = true;
+          }
+        })
+        .catch(function (err) {
+          console.log("회원가입 실패: "+err.message);
+          state.signup_data.result = false;
+        })
+    },
+    /**
+     * 로그아웃
+     * @param state
+     */
     logout_user:state =>{
       axios.defaults.headers.common['Authorization'] = state.j_token;
       axios.post(state._location+"/api/users/logout")
@@ -369,6 +419,46 @@ export const store = new Vuex.Store({
           result = -1;
         })
       return result;
+    },
+    /**
+     * 포스트 리스트를 가져옴
+     * @param state
+     * @param payload
+     */
+    get_post_list_mutations:(state, payload) => {
+      axios.get(state._location + "/api/posts/list/o/"+payload)
+        .then(function (response) {
+          console.log(`[get_post_list_mutations]:${typeof response.status}`)
+          if(response.status === 200){
+            state.board_list_result = true;
+            state.board_list = response.data.data;
+            console.log("[/api/posts/list/"+payload+"] 요청 받은 데이터");
+          }else{
+            state.board_list_result = false;
+            state.board_list = [];
+          }
+        })
+    },
+    update_list_count_mutation:(state) => {
+      let list = state.board_list;          // array
+      let categories = state.categories;    // array
+      let listCount = {};
+      let categoriesList = [];
+      console.log(categories[0].name);
+      //
+      for(let i=0; i<categories.length; i++){
+        categoriesList.push(categories[i].name.toLowerCase());
+        listCount[categoriesList[i]] = 0;
+      }
+      for(let j=0; j<categoriesList.length; j++){
+        console.log(`categoriesList[${j}]: `+categoriesList[j])
+        for(let k=0; k<list.length; k++){
+          console.log(`${list[k].category.toLowerCase()} :: ${categoriesList[j]}`);
+          if(list[k].category.toLowerCase() === categoriesList[j]) listCount[categoriesList[j]]++;
+        }
+      }
+      // return listCount;
+      state["listCount"] = listCount;
     }
   },
   actions:{
@@ -379,37 +469,35 @@ export const store = new Vuex.Store({
       context.commit('sign_check_id', payload);
     },
     signup_action:function (context, payload) {
-      let result = false;
-      let postData = new URLSearchParams;
-      postData.append("username",payload[0]);
-      postData.append("password",payload[1]);
-      postData.append("password-match",payload[2]);
-      postData.append("email",payload[3]);
-      /*console.log(`username ${payload[0]}`);
-      console.log(`password ${payload[1]}`);
-      console.log(`password-match ${payload[2]}`);
-      console.log(`email ${payload[3]}`);
-      console.log(`location : ${context._location}`)*/
-      axios.post("http://blog.pollra.com/api/users",postData)
-        .then(function (response) {
-          // console.log("ㅇㅂㅇ!: "+response);
-          if(response.status === 200){
-            // this.$router.push("/login");
-            result = true;
-          }
-        })
-        .catch(function (err) {
-          console.log("ㅇㅅㅇ? : "+err.message);
-          result = false;
-        })
-      return result;
+      return new Promise(function (resolve) {
+        setTimeout(function () {
+          context.commit("signup_user", payload);
+          resolve();
+        }, 500)
+      });
     },
     login_action:function (context) {
       return new Promise((resolve, reject) => {
         context.commit("login_mutations")
         setTimeout(()=>{
-          resolve()
+          resolve();
         }, 1000)
+      })
+    },
+    getPostList_action: function (context, payload) {
+      return new Promise((resolve, reject) => {
+        context.commit("get_post_list_mutations", payload);
+        setTimeout(()=>{
+          resolve();
+        },500)
+      })
+    },
+    update_list_count_action:function (context) {
+      return new Promise(resolve => {
+        context.commit("update_list_count_mutation");
+        setTimeout(()=>{
+          resolve();
+        },100)
       })
     }
   },

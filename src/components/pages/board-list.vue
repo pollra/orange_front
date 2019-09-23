@@ -7,23 +7,30 @@
     <div
       slot="contents"
       class="board-list"
-      v-if="this.$store.state.board_list.title !== ''"
+      v-if="currentCategory()"
     >
       <div class="board-none-box">
         <p class="icon-help-circled"></p>
         <span>포스팅이 존재하지 않습니다.</span>
       </div>
-      <board-item
-        v-for="(board, index) in this.$store.state.board_list"
-        :key="index"
-        :imgPath="board.img_path"
-        :uri="board.uri"
-      >
-        <template slot="item-date">{{board.date}}</template>
-        <template slot="item-title">{{board.title}}</template>
-      </board-item>
     </div>
-
+    <div
+      slot="contents"
+      class="board-list"
+      v-if="!currentCategory()"
+    >
+        <div
+          is="board-item"
+          v-for="(board, index) in this.$store.state.board_list"
+          :key="index"
+          :imgPath="board.img_path"
+          :uri="board.uri"
+          :name="board.category"
+        >
+          <template slot="item-date">{{board.date}}</template>
+          <template slot="item-title">{{board.title}}</template>
+        </div>
+    </div>
   </content-box>
 </template>
 
@@ -60,29 +67,25 @@
           * */
           capitalizeFirstLetter(string) {
               return string.charAt(0).toUpperCase() + string.slice(1);
+          },
+          get_postsList(){
+              // console.log(this.$route.params.category);
+              this.$store.dispatch("getPostList_action","admin")
+                  .then(()=> {
+                      this.$store.dispatch("update_list_count_action");
+                  })
+          },
+          currentCategory:function(item){
+              console.log(`listCount: ${this.$store.state.listCount[this.$route.params.category.toLowerCase()] === 0}`);
+              if(this.$store.state.listCount === undefined) return true;
+              return this.$store.state.listCount[this.$route.params.category.toLowerCase()] === 0;
           }
       },
-      created() {
-          // 네비게이션 좌측 상단의 리다이렉트 버튼의 경로를 변경
-          setTimeout(function () {
-            this.$store.commit("page_redirect_update","/api/authenticate");
-          },100)
-
-          new Promise(function (resolve, reject) {
-              this.get_board_list();
-              if(this.$store.state.board_info.parent==="Error"){
-                  reject();
-              }else{
-                  resolve();
-              }
-          }).then(function () {
-              // 포스트 리스트를 불러오는 기능
-          }).catch(function () {
-              console.log("페이지가 이상함")
-          })
+      created(){
+          this.get_postsList();
+          // this.currentCategory();
       },
-      computed(){
-
+      computed:{
       }
   }
 </script>

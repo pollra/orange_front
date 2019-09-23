@@ -3,13 +3,13 @@
     <content-info slot="content-info">
       <div slot="content-parent">
         <select v-model="category">
-          <option v-for="(item, index) in this.$store.state.categories" v-bind:value="item.num" :key="index">
+          <option v-for="(item, index) in this.$store.state.categories" v-bind:value="item.name" :key="index">
             {{item.name}}
           </option>
         </select>
       </div>
-      <span class="icon-pencil" slot="content-title" v-model="title"></span>
-      <input slot="content-title" id="content-title"/>
+      <span class="icon-pencil" slot="content-title"></span>
+      <input slot="content-title" id="content-title" v-model="title"/>
       <div slot="content-title" class="underline"></div>
     </content-info>
     <div id="content-board" slot="contents">
@@ -55,6 +55,12 @@
                     "post_insert_mutations",
                     [this.title,this.text,this.category]);
                 this.$router.push("/post/"+result);
+            },
+        },
+        computed:{
+            update_category_status:function () {
+                let list = this.$store.state.board_list;
+                let result = false;
             }
         }
     }

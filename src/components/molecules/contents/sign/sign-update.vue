@@ -89,16 +89,9 @@
             }
         },
         computed:{
-            /*login_info:()=>{
-                return this.$store.state.login_info;
-            }*/
             current_pw:()=>{
-                // console.log("입력된 비밀번호: "+this.pw);
                 return this.pw;
             },
-            username_(){
-                return this.$store.state.login_info.name;
-            }
         },
         created() {
         }

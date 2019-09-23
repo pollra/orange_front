@@ -47,19 +47,14 @@
         },
         methods:{
             go_signIn(){
-                console.log("안냥??");
-                if(
-                  this.$store.dispatch("signup_action",[
-                      this.user_account.id,
-                      this.user_account.pw,
-                      this.user_account.pw_m,
-                      this.user_account.email
-                  ])
-                ){
-                    console.log("나는 로그라고해");
-                    this.$router.push("/login");
-                }
-                console.log("안냥!!");
+                this.$store.dispatch("signup_action",[
+                    this.user_account.id,
+                    this.user_account.pw,
+                    this.user_account.pw_m,
+                    this.user_account.email
+                ]).then(function () {
+                    this.$router.push("/login")
+                })
             }
         },
         computed:{

@@ -1,6 +1,7 @@
 <template>
   <router-link class="userIcon" to="/login">
-    <img :src="imgPath"/>
+    <div v-if="imgPath === ''" :src="imgPath"></div>
+    <img v-if="imgPath !== ''" :src="imgPath"/>
   </router-link>
 </template>
 
@@ -20,10 +21,11 @@
     transition: color 0.2s ease;
     cursor: pointer;
   }
-  .userIcon > img{
+  .userIcon > img, .userIcon > div{
     border-radius: 50%;
     width: 100%;
     height: 100%;
+    background: #333333;
   }
 </style>
 

@@ -1,7 +1,8 @@
 <template>
   <div class="login-container">
     <router-link class="login-logoBox" to="/">
-      <img class="login-logo" :src="this.$store.state.blog_info.imgPath">
+      <img v-if="(this.$store.state.blog_info.imgPath !== '')" class="login-logo" :src="this.$store.state.blog_info.imgPath">
+      <img v-if="(this.$store.state.blog_info.imgPath === '')" class="login-logo login-logo-none">
     </router-link>
     <div class="login-inputBox">
       <div >
@@ -30,9 +31,12 @@
 <script>
     import {store} from "./../../../store";
     import { mapGetters } from 'vuex'
+    import UserIcon from "../../../atoms/buttons/user-icon";
 
     export default {
         name: "login-form",
+
+        components: {UserIcon},
         store,
         data(){
             return {
@@ -43,39 +47,15 @@
         },
         methods:{
             j_login_action(){
-                const a = this;
-                console.log("로그인 버튼이 눌림 ㅇㅅㅇ !!!!");
                 this.$store.dispatch("login_action")
                     .then(()=>{
-                      a.abc();
+                      this.loginPageRedirect();
                     })
-                /*console.log("ㅇㅅㅇ;;;;")
-                console.log(this.$store.state.signin_data.result);
-                console.log(`result : ${this.get_login_result}`);
-                if(this.get_login_result){
-                    console.log(`페이지 이동${this.get_login_result}`);
-                    this.$router.push("/post/1")
-                }else{
-                    console.log(`페이지 이동 ㄴㄴ${this.get_login_result}`);
-
-                    // alert(this.$store.state.signin_data.message);
-                    // this.id = "";
-                    // this.pw = "";
-                }*/
             },
-            abc(){
-                console.log("ㅇㅅㅇ;;;;")
+            loginPageRedirect(){
                 console.log(this.$store.state.signin_data.result);
-                console.log(`result : ${this.get_login_result}`);
                 if(this.get_login_result){
-                    console.log(`페이지 이동${this.get_login_result}`);
                     this.$router.push("/post/1")
-                }else{
-                    console.log(`페이지 이동 ㄴㄴ${this.get_login_result}`);
-
-                    // alert(this.$store.state.signin_data.message);
-                    // this.id = "";
-                    // this.pw = "";
                 }
             }
         },
@@ -175,6 +155,7 @@
   }
   #login-id{
     letter-spacing: 3px;
+    font-size: 18px;
   }
   .icon-spin1{
     right: 15px;
@@ -271,5 +252,7 @@
     position: absolute;
     text-decoration: none;
   }
-
+  .login-logo-none{
+    background: #333333;
+  }
 </style>

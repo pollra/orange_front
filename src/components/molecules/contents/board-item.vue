@@ -1,5 +1,5 @@
 <template>
-  <div class="item">
+  <div class="item" v-if="currentPathCheck">
     <router-link :to="'/post/'+this.uri" class="item-link">
       <div class="item-view">
         <template v-if="this.imgPath !== ''">
@@ -24,8 +24,14 @@
 
 <script>
     export default {
-        props:['imgPath','uri'],
+        props:['imgPath','uri','name'],
         name: "board-item",
+        computed:{
+            currentPathCheck:function () {
+                // console.log(`결과 : ${this.name} === ${this.$route.params.category}: `+ (this.name === this.$route.params.category));
+                return this.name == this.$route.params.category.toLowerCase();
+            }
+        }
     }
 </script>
 
