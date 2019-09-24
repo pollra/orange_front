@@ -1,7 +1,7 @@
 <template>
   <content-box>
     <content-info slot="content-info">
-      <span slot="content-parent">{{this.$store.state.board_info.parent}}</span>
+      <span slot="content-parent">main</span>
       <span slot="content-title">{{this.$route.params.category}}</span>
     </content-info>
     <div
@@ -70,7 +70,8 @@
           },
           get_postsList(){
               // console.log(this.$route.params.category);
-              this.$store.dispatch("getPostList_action","admin")
+              this.$store.commit("set_post_list_default_mutation");
+              this.$store.dispatch("getPostList_action","ad")
                   .then(()=> {
                       this.$store.dispatch("update_list_count_action");
                   })

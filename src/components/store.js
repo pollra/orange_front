@@ -56,6 +56,7 @@ export const store = new Vuex.Store({
       comment: "",
       contents: ""
     },
+    create_board_to_redirect:0,
     board_list:[
       {
         title:"Java",
@@ -72,7 +73,7 @@ export const store = new Vuex.Store({
         category:"programing"
       }
     ],
-    board_list_result:true,
+    // board_list_result:true,
     currentPath:"",
     // 로그인 데이터
     signin_data:{
@@ -410,10 +411,10 @@ export const store = new Vuex.Store({
       axios.defaults.headers.common['Authorization'] = state.j_token;
       axios.post(state._location+"/api/posts",postData)
         .then(function (response) {
-          if(response.status === "200"){
+          if(response.status === 200){
             console.log("post_insert : OK");
             // 요청을 처리한 결과는 보여질 페이지의 위치
-            result = response.data.redirect;
+            state.create_board_to_redirect = response.data.data;
           }
         })
         .catch(function (err) {
@@ -443,6 +444,10 @@ export const store = new Vuex.Store({
           }
         })
     },
+    /**
+     * 카테고리별 리스트 보유 현황 업데이트
+     * @param state
+     */
     update_list_count_mutation:(state) => {
       let list = state.board_list;          // array
       let categories = state.categories;    // array
@@ -463,6 +468,34 @@ export const store = new Vuex.Store({
       }
       // return listCount;
       state["listCount"] = listCount;
+    },
+    /**
+     * 포스팅 하나를 가져옴
+     * @param state   vuex
+     * @param payload currentPageParam:num
+     */
+    get_one_post_mutation:(state, payload) => {
+      let currentPageNum = payload;
+      axios.get(state._location+"/api/posts/one/"+currentPageNum)
+        .then(function (response) {
+          const context = response.data;
+          console.log(response);
+          if(response.status === 200){
+            console.log(`${state._location+"/api/posts/one/"+currentPageNum} 으로의 요청 결과 성공`);
+            console.log(`[get_one_post] 받은 데이터: ${context.data}`)
+            state.board_info = context.data;
+          }else{
+            console.log(`${state._location+"/api/posts/one/"+currentPageNum} 으로의 요청 결과 실패`);
+          }
+        })
+
+    },
+    /**
+     * 보드 리스트 기본셋팅
+     * 보드 리스트로 갔을때 현재 정보에 영향을 끼치지 않게 설정
+     */
+    set_post_list_default_mutation:state => {
+      state.board_info.date = "";
     }
   },
   actions:{
@@ -485,7 +518,7 @@ export const store = new Vuex.Store({
         context.commit("login_mutations")
         setTimeout(()=>{
           resolve();
-        }, 1000)
+        }, 200)
       })
     },
     getPostList_action: function (context, payload) {
@@ -502,6 +535,22 @@ export const store = new Vuex.Store({
         setTimeout(()=>{
           resolve();
         },100)
+      })
+    },
+    get_one_post_action:function (context, payload) {
+      return new Promise(resolve => {
+        context.commit("get_one_post_mutation", payload)
+        setTimeout(()=>{
+          resolve();
+        }, 100)
+      })
+    },
+    post_insert_action:function (context, payload) {
+      return new Promise(resolve => {
+        context.commit("post_insert_mutations",payload)
+        setTimeout(()=>{
+          resolve();
+        }, 1000)
       })
     }
   },

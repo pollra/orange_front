@@ -51,10 +51,10 @@
         },
         methods:{
             one_post_insert(){
-                let result = this.$store.commit(
-                    "post_insert_mutations",
-                    [this.title,this.text,this.category]);
-                this.$router.push("/post/"+result);
+                this.$store.dispatch("post_insert_action",[this.title,this.text,this.category])
+                  .then(()=>{
+                    this.$router.push("/post/"+this.$store.state.create_board_to_redirect);
+                  })
             },
         },
         computed:{
