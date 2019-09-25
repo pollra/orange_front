@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <vue-headful
-      :title="this.$store.state.blog_info.title"
+      :title="this.$store.state.blog_info.metaTitle"
+      :image="this.$store.state.blog_info.imgPath"
+      :description="this.$store.state.blog_info.explanation"
     />
     <navigation>
       <user-icon slot="left" class="nav_user_icon" v-bind:imgPath="this.$store.state.blog_info.imgPath"></user-icon>

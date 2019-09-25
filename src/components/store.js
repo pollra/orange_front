@@ -17,7 +17,7 @@ axios.interceptors.request.use(function (config) {
 
 export const store = new Vuex.Store({
   state:{
-    _location:"http://localhost",
+    _location:"http://blog.pollra.com",
     page_status:{
       icon_redirect: {
         login_page: "/",
@@ -30,7 +30,8 @@ export const store = new Vuex.Store({
     blog_info:{
       title:"Pollra 블로그",
       explanation: "잊을만 하면 찾아오는 기억 저장소",
-      imgPath: ""
+      imgPath: "",
+      metaTitle:""
     },
     categories:[
       {
@@ -88,7 +89,7 @@ export const store = new Vuex.Store({
         data:""
       },
       result:false,
-      message:""
+      message:"",
     },
     // 가입 데이터
     signup_data:{
