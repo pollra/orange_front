@@ -5,7 +5,11 @@ import BoardList from '@/components/pages/board-list'
 import Login from '@/components/pages/login'
 import SignUp from '@/components/pages/signup'
 import PostCreate from '@/components/pages/post-create'
-import MyStatus from '@/components/pages/my-status'
+import StatusBlog from '@/components/pages/status/status-blog'
+import StatusPosts from '@/components/pages/status/status-posts'
+import StatusMy from '@/components/pages/status/status-my'
+import StatusUsers from '@/components/pages/status/status-users'
+import StatusCategories from '@/components/pages/status/status-categories'
 
 Vue.use(Router)
 
@@ -42,9 +46,29 @@ export default new Router({
       component: PostCreate
     },
     {
-      path: '/info',
-      name: 'MyStatus',
-      component: MyStatus
-    }
+      path: '/info/blog',
+      name: 'StatusBlog',
+      component: StatusBlog
+    },
+    {
+      path: '/info/my',
+      name: 'StatusMy',
+      component: StatusMy
+    },
+    {
+      path: '/info/posts',
+      name: 'StatusPosts',
+      component: StatusPosts
+    },
+    {
+      path: '/info/users',
+      name: 'StatusUsers',
+      component: StatusUsers
+    },
+    {
+      path: '/info/categories',
+      name: 'StatusCategories',
+      component: StatusCategories
+    },
   ]
 })

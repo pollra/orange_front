@@ -37,9 +37,9 @@
 </template>
 
 <script>
-    import BrowserTitle from "../../molecules/status/content/browser-title";
-    import BlogStatusUpdate from "../../molecules/status/content/blog-status-update";
-    import SaveBtn from "../../atoms/buttons/save-btn";
+    import BrowserTitle from "../content/browser-title";
+    import BlogStatusUpdate from "../content/blog-status-update";
+    import SaveBtn from "../../../atoms/buttons/save-btn";
     export default {
         name: "blog-config",
         components: { SaveBtn, BlogStatusUpdate, BrowserTitle},

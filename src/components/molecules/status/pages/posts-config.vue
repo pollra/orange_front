@@ -1,10 +1,13 @@
 <template>
+  <div>
 
+  </div>
 </template>
 
 <script>
     export default {
-        name: "posts-config"
+        name: `posts-config`,
+        components: {}
     }
 </script>
 

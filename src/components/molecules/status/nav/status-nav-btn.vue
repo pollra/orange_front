@@ -9,15 +9,14 @@
       <slot name="text">{{text}}</slot>
     </div>
     <!--권한-->
-    <div class="status-auth" :class="auth">
-      <div :class="('icon-'+auth)"/>
-      <span>{{this.auth.toUpperCase()}}</span>
-    </div>
+    <auth-button :auth="auth"/>
   </div>
 </template>
 
 <script>
+    import AuthButton from "../../../atoms/buttons/auth/auth-button";
     export default {
+        components: {AuthButton},
         props:['icon','text', 'auth'],
         name: "status-nav-icon"
     }
@@ -49,27 +48,5 @@
     -webkit-user-select: none;
     -khtml-user-select: none;
     user-select:none;
-  }
-  .status-auth.user{
-    font-size: 10px;
-    padding: 5px 10px;
-    background: #4facfe;
-    border-radius: 3px;
-    color: white;
-    margin-right: 8px;
-  }
-  .status-auth.admin{
-    font-size: 10px;
-    padding: 5px 10px;
-    background: crimson;
-    border-radius: 3px;
-    color: white;
-    margin-right: 8px;
-  }
-  .status-auth{
-    display: flex;
-    flex-direction: row;
-    margin-top: 2px;
-    margin-bottom: 2px;
   }
 </style>

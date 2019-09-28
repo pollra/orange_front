@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "my-config"
+        name: "categories-config"
     }
 </script>
 

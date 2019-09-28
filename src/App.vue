@@ -14,7 +14,7 @@
         <template slot="logo-title" v-if="this.$store.state.j_token !== ''">
           {{this.$store.state.blog_info.title}}
           <router-link to="/create/post" class="icon-pencil-squared user-info-btn"/>
-          <label class="icon-user user-info-btn" for="toggle-user-info"/>
+          <router-link to="/info/my" class="icon-user user-info-btn" for="toggle-user-info"/>
           <input id="toggle-user-info" type="checkbox" required="required" checked>
           <sign-update slot="left"
                        class="update-form"

@@ -28,6 +28,9 @@
 .icon-plus:before { content: '\e81a'; } /* '' */
 .icon-plus-1:before { content: '\e81b'; } /* '' */
 .icon-floppy:before { content: '\e81c'; } /* '' */
+.icon-emo-devil:before { content: '\e81d'; } /* '' */
+.icon-emo-laugh:before { content: '\e81e'; } /* '' */
+.icon-help-circled-1:before { content: '\e81f'; } /* '' */
 .icon-spin1:before { content: '\e830'; } /* '' */
 .icon-spin6:before { content: '\e839'; } /* '' */
 .icon-chrome:before { content: '\e841'; } /* '' */

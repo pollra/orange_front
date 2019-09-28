@@ -239,6 +239,24 @@
       "css": "floppy",
       "code": 59420,
       "src": "fontawesome"
+    },
+    {
+      "uid": "4dd56d61fd0dab19277824da301424b3",
+      "css": "emo-devil",
+      "code": 59421,
+      "src": "fontelico"
+    },
+    {
+      "uid": "2bd5f98482d86649958312ea2ab5bb40",
+      "css": "emo-laugh",
+      "code": 59422,
+      "src": "fontelico"
+    },
+    {
+      "uid": "de9a631a7d18106aea1c89ba51b1990a",
+      "css": "help-circled-1",
+      "code": 59423,
+      "src": "entypo"
     }
   ]
 }
