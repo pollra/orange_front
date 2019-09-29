@@ -11,7 +11,7 @@
     import BlogConfig from "../../molecules/status/pages/blog-config";
     export default {
         name: "status-blog",
-        components: {BlogConfig, MyStatus}
+        components: {BlogConfig, MyStatus},
     }
 </script>
 

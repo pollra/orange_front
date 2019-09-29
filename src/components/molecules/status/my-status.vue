@@ -59,6 +59,7 @@
   #center-content{
     flex: 1;
     margin-left: 210px;
+    width: 800px;
   }
   .user-state-logo{
     margin-bottom: 20px;

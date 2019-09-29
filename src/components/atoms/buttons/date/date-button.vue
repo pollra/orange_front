@@ -20,7 +20,10 @@
     background: #999999;
     border-radius: 3px;
     padding: 3px 5px;
+    max-height: 16px;
     font-family: 'Montserrat', sans-serif;
+    max-width: 70px;
+    min-width: 65px;
   }
   .date-btn > div{
     line-height: 12px;

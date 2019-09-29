@@ -32,5 +32,6 @@
     flex-direction: row;
     margin-top: 2px;
     margin-bottom: 2px;
+    max-height: 12px;
   }
 </style>
