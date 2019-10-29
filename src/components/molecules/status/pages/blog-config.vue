@@ -8,10 +8,11 @@
     <!--content-->
     <div class="blog-config-content">
       <browser-title class="browser"/>
-      <save-btn class="save-btn"/>
+      <div @click="update_function('meta')">
+        <save-btn class="save-btn"></save-btn>
+      </div>
     </div>
-    <label class="icon-help-circled" for="help-check-meta">브라우저 탭에 표시할 이름을 재설정합니다.</label>
-    <input type="checkbox" id="help-check-meta" required="required">
+    <label class="icon-help-circled">브라우저 탭에 표시할 이름을 재설정합니다.</label>
     <div class="ex1">
       <span class="explanation no-drag">
         <h3>브라우저 탭에 표시할 이름을 재설정합니다.</h3>
@@ -20,9 +21,13 @@
     </div>
     <div class="under-line"/>
     <!--블로그 정보 수정-->
-    <blog-status-update/>
-    <label class="icon-help-circled" for="help-check-info">블로그 정보를 재설정합니다.</label>
-    <input type="checkbox" id="help-check-info" required="required">
+    <div class="blog-config-content">
+      <blog-status-update/>
+      <div @click="update_function('info')">
+        <save-btn class="save-btn"></save-btn>
+      </div>
+    </div>
+    <label class="icon-help-circled">블로그 정보를 재설정합니다.</label>
     <div class="ex2">
       <span class="explanation no-drag">
         <h3>블로그 정보를 재설정합니다.</h3>
@@ -46,6 +51,26 @@
         data(){
             return {
 
+            }
+        },
+        methods:{
+            update_function(target){
+                const log = console.log;
+                log('update_function::start')
+                if(target === "meta"){
+                    log(`update_function.meta::start`)
+                    this.$store.dispatch("update_blog_title_action")
+                        .then((ok) =>{
+                            this.$store.commit("set_blog_info");
+                        })
+                }
+                if(target === "info"){
+                    log(`update_function.info::start`)
+                    this.$store.dispatch("update_blog_info_action")
+                        .then((ok) => {
+                            this.$store.commit("set_blog_info");
+                        })
+                }
             }
         }
     }

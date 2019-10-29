@@ -3,10 +3,12 @@
     <!--불량 사용자-->
     <div v-if="block" class="true-btn">
       <div class="icon-emo-devil"/>
+      <span></span>
     </div>
     <!---->
     <div v-if="!block" class="false-btn">
       <div class="icon-emo-laugh"/>
+      <span></span>
     </div>
   </div>
 </template>
@@ -21,8 +23,8 @@
 <style scoped>
 
   .check-box{
-    width: 48px;
-    height: 48px;
+    width: 80px;
+    height: 20px;
     position: relative;
     border-radius: 3px;
     color: white;

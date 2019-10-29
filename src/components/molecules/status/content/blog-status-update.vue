@@ -9,11 +9,16 @@
     </div>
     <div class="info-container">
       <div class="title-box">
-        <input id="info-title" type="text" :placeholder="this.$store.state.blog_info.title">
+        <input id="info-title"
+               type="text"
+               v-model="$store.state.infoUpdate.blog.title"
+               :placeholder="this.$store.state.blog_info.title">
       </div>
       <div class="explanation-box">
-        <input id="info-explanation" type="text" :placeholder="this.$store.state.blog_info.explanation">
-        <save-btn/>
+        <input id="info-explanation"
+               type="text"
+               v-model="$store.state.infoUpdate.blog.ex"
+               :placeholder="this.$store.state.blog_info.explanation">
       </div>
     </div>
   </div>

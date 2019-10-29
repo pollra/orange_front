@@ -19,14 +19,7 @@
       class="board-list"
       v-if="!currentCategory()"
     >
-        <div
-          is="board-item"
-          v-for="(board, index) in this.$store.state.board_list"
-          :key="index"
-          :imgPath="board.img_path"
-          :uri="board.uri"
-          :name="board.category"
-        >
+        <div is="board-item" v-for="(board, index) in this.$store.state.board_list" :key="index" :imgPath="board.img_path" :uri="board.uri" :name="board.category" >
           <template slot="item-date">{{board.date}}</template>
           <template slot="item-title">{{board.title}}</template>
         </div>

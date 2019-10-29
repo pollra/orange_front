@@ -34,4 +34,5 @@
     margin-bottom: 2px;
     max-height: 12px;
   }
+
 </style>

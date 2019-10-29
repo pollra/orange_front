@@ -35,19 +35,19 @@
         <h2>비밀번호 수정</h2>
         <div class="pw-update-input">
           <div id="current-pw-title" class="title-text">현재 비밀번호</div>
-          <input id="current-pw" class="current in-pw" type="password" placeholder="현재 비밀번호" required="required">
+          <input id="current-pw" class="current in-pw" type="password" v-model="$store.state.infoUpdate.user.update.password.current_password" placeholder="현재 비밀번호" required="required">
           <div class="new-pw">
             <div class="pw-title title-text">새로운 비밀번호</div>
-            <input class="pw in-pw" type="password" placeholder="새로운 비밀번호" required="required">
+            <input class="pw in-pw" type="password" v-model="$store.state.infoUpdate.user.update.password.password" placeholder="새로운 비밀번호" required="required">
             <div class="pw-match-title title-text">새로운 비밀번호 확인</div>
-            <input class="pw-match in-pw" type="password" placeholder="새로운 비밀번호 확인" required="required">
+            <input class="pw-match in-pw" type="password" v-model="$store.state.infoUpdate.user.update.password.password_match" placeholder="새로운 비밀번호 확인" required="required">
           </div>
         </div>
         <div class="pw-ex">
           <div class="icon-help-circled-1"/>
           <span>도움말</span>
         </div>
-        <div class="pw-save-btn">
+        <div class="pw-save-btn" @click="update_function('password')">
           <save-btn/>
         </div>
       </div>
@@ -56,14 +56,14 @@
         <h2>이메일 수정</h2>
         <div class="email-update-box">
           <span>변경할 이메일 주소</span>
-          <input type="password" placeholder="변경할 이메일 주소">
+          <input type="text" v-model="$store.state.infoUpdate.user.update.email" placeholder="변경할 이메일 주소">
         </div>
         <div class="email-ex">
           <div class="icon-help-circled-1"/>
           <span>도움말</span>
         </div>
-        <div class="email-save-btn">
-          <save-btn/>
+        <div class="email-save-btn" @click="update_function('email')">
+          <save-btn />
         </div>
         <!--<div>등록된 이메일을 수정합니다.</div>
         <div>
@@ -85,7 +85,66 @@
     import SaveBtn from "../../../atoms/buttons/save-btn";
     export default {
         name: "my-config",
-        components: {SaveBtn, BlockButton, DateButton, AuthButton, StatusUserIcon}
+        components: {SaveBtn, BlockButton, DateButton, AuthButton, StatusUserIcon},
+        data(){
+            return {
+                current_password: "",
+                password:"",
+                password_match:"",
+                email: ""
+            }
+        },
+        methods:{
+            update_function(target){
+                // 0: option, 1: username
+                // email:: 2: email
+                // password:: 2: current_password, 3: password, 4: password-match
+                //update_user_data_mutations
+                console.log('update_function start')
+
+                if(target === 'password' && this.password_alert()) {
+                    console.log('start the password update function')
+                    this.$store.commit("update_user_data_mutations","password");
+
+                } else if(target === 'email' && this.email_alert()) {
+                    console.log('start the email update function')
+                    this.$store.commit("update_user_data_mutations","email");
+
+                    /*
+                    결과를 저장할 필요가 있음
+                    그런데 결과를 저장해봤자
+                     */
+                }
+            },
+            // 비밀번호 유효성 검사
+            password_alert(){
+                if(this.$store.state.infoUpdate.user.update.password.current_password === ""){
+                    alert("현재 비밀번호를 입력해주세요");
+                    return false;
+                }
+                if(this.$store.state.infoUpdate.user.update.password.password === ""){
+                    alert("변경하려는 비밀번호가 입력되지 않았습니다.");
+                    return false;
+                }
+                if(this.$store.state.infoUpdate.user.update.password.password_match === ""){
+                    alert("변경하려는 비밀번호 재입력");
+                    return false;
+                }
+                if(this.$store.state.infoUpdate.user.update.password.password !== this.$store.state.infoUpdate.user.update.password.password_match){
+                    alert("비밀번호가 일치하지 않습니다.");
+                    return false;
+                }
+                return true;
+            },
+            // 이메일 유효성 검사
+            email_alert(){
+                if(this.$store.state.infoUpdate.user.update.email === ""){
+                    alert("이메일을 입력해 주세요");
+                    return false
+                }
+                return true;
+            }
+        }
     }
 </script>
 

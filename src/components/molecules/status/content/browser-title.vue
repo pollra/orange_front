@@ -3,7 +3,10 @@
     <div class="browser-left"></div>
     <div class="browser-center">
       <label for="title-input" class="icon-chrome"/>
-      <input id="title-input" type="text" :placeholder="this.$store.state.blog_info.metaTitle">
+      <input id="title-input"
+             type="text"
+             v-model="$store.state.infoUpdate.blog.meta"
+             :placeholder="this.$store.state.blog_info.metaTitle">
       <div class="icon-cancel-1"/>
     </div>
     <div class="browser-right">
