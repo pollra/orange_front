@@ -10,6 +10,10 @@
 
 ![인덱스_페이지](readme/index_page.png)
 
+### 일반 페이지
+
+![설정_페이지](readme/blog_setting_page.png)
+
 ## Build Setup
 
 ``` bash
