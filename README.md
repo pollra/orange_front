@@ -2,6 +2,14 @@
 
 > Orange project frontend
 
+### 로그인 페이지
+
+![로그인_페이지](readme/login_page.png)
+
+### 일반 페이지
+
+![인덱스_페이지](readme/index_page.png)
+
 ## Build Setup
 
 ``` bash
